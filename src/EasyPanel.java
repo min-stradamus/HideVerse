@@ -4,37 +4,45 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class GamePanel extends JPanel {
+public class EasyPanel extends JPanel {
     private static final int TILE = 45;
-    private static final int GRID_W = 14; // columns
-    private static final int GRID_H = 15; // rows
+    private static final int GRID_W = 14; //columns
+    private static final int GRID_H = 10; //rows
 
-    // Corner images
+    //corner images
     private BufferedImage topLeftCornerImg, topRightCornerImg;
     private BufferedImage bottomLeftCornerImg, bottomRightCornerImg;
 
-    // Side images
+    //side images
     private BufferedImage topSideImg, bottomSideImg;
     private BufferedImage leftSideImg, rightSideImg;
 
-    public GamePanel() {
+    //barrier images
+    private BufferedImage wholeBarrierImg, lBarrierImg;
+
+    public EasyPanel() {
         setPreferredSize(new Dimension(GRID_W * TILE, GRID_H * TILE));
         Color TORQUOISE = new Color(60, 184, 152);
         setBackground(TORQUOISE);
 
         try {
-            // Load corners
-            topLeftCornerImg     = ImageIO.read(new File("assets/corner_wall.png"));
-            topRightCornerImg    = ImageIO.read(new File("assets/corner_wall_2.png"));
-            bottomLeftCornerImg  = ImageIO.read(new File("assets/corner_wall_3.png"));
+            //load corners
+            topLeftCornerImg = ImageIO.read(new File("assets/corner_wall.png"));
+            topRightCornerImg = ImageIO.read(new File("assets/corner_wall_2.png"));
+            bottomLeftCornerImg = ImageIO.read(new File("assets/corner_wall_3.png"));
             bottomRightCornerImg = ImageIO.read(new File("assets/corner_wall_4.png"));
 
-            // Load sides
-            topSideImg    = ImageIO.read(new File("assets/side_wall.png"));
+            //load sides
+            topSideImg = ImageIO.read(new File("assets/side_wall.png"));
             bottomSideImg = ImageIO.read(new File("assets/side_wall_d.png"));
-            leftSideImg   = ImageIO.read(new File("assets/side_wall_l.png"));
-            rightSideImg  = ImageIO.read(new File("assets/side_wall_r.png"));
-        } catch (Exception e) {
+            leftSideImg = ImageIO.read(new File("assets/side_wall_l.png"));
+            rightSideImg = ImageIO.read(new File("assets/side_wall_r.png"));
+
+            //load barriers
+            wholeBarrierImg = ImageIO.read(new File("assets/whole_barrier.png"));
+            lBarrierImg = ImageIO.read(new File("assets/l_barrier.png"));
+        } 
+        catch (Exception e) {
             System.out.println("Error loading wall images: " + e.getMessage());
         }
     }
@@ -43,7 +51,7 @@ public class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Top row
+        //top row
         for (int x = 0; x < GRID_W; x++) {
             int y = 0;
             if (x == 0 && topLeftCornerImg != null) {
@@ -55,7 +63,7 @@ public class GamePanel extends JPanel {
             }
         }
 
-        // Bottom row
+        //bottom row
         for (int x = 0; x < GRID_W; x++) {
             int y = GRID_H - 1;
             if (x == 0 && bottomLeftCornerImg != null) {
@@ -67,18 +75,20 @@ public class GamePanel extends JPanel {
             }
         }
 
-        // Left side (skip corners)
+        //left side (skip corners)
         for (int y = 1; y < GRID_H - 1; y++) {
             if (leftSideImg != null) {
                 g.drawImage(leftSideImg, 0, y * TILE, TILE, TILE, null);
             }
         }
 
-        // Right side (skip corners)
+        //right side (skip corners)
         for (int y = 1; y < GRID_H - 1; y++) {
             if (rightSideImg != null) {
                 g.drawImage(rightSideImg, (GRID_W - 1) * TILE, y * TILE, TILE, TILE, null);
             }
         }
+
+        
     }
 }
